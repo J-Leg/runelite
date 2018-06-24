@@ -29,18 +29,22 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
+import static net.runelite.api.NpcID.*;
+
 @RequiredArgsConstructor
 public enum BarrowsBrothers
 {
-	AHRIM("Ahrim", new WorldPoint(3566, 3289, 0), Varbits.BARROWS_KILLED_AHRIM),
-	DHAROK("Dharok", new WorldPoint(3575, 3298, 0), Varbits.BARROWS_KILLED_DHAROK),
-	GUTHAN("Guthan", new WorldPoint(3577, 3283, 0), Varbits.BARROWS_KILLED_GUTHAN),
-	KARIL("Karil", new WorldPoint(3566, 3275, 0), Varbits.BARROWS_KILLED_KARIL),
-	TORAG("Torag", new WorldPoint(3553, 3283, 0), Varbits.BARROWS_KILLED_TORAG),
-	VERAC("Verac", new WorldPoint(3557, 3298, 0), Varbits.BARROWS_KILLED_VERAC);
+	AHRIM("Ahrim", AHRIM_THE_BLIGHTED, new WorldPoint(3566, 3289, 0), Varbits.BARROWS_KILLED_AHRIM),
+	DHAROK("Dharok", DHAROK_THE_WRETCHED, new WorldPoint(3575, 3298, 0), Varbits.BARROWS_KILLED_DHAROK),
+	GUTHAN("Guthan", GUTHAN_THE_INFESTED, new WorldPoint(3577, 3283, 0), Varbits.BARROWS_KILLED_GUTHAN),
+	KARIL("Karil", KARIL_THE_TAINTED, new WorldPoint(3566, 3275, 0), Varbits.BARROWS_KILLED_KARIL),
+	TORAG("Torag", TORAG_THE_CORRUPTED, new WorldPoint(3553, 3283, 0), Varbits.BARROWS_KILLED_TORAG),
+	VERAC("Verac", VERAC_THE_DEFILED, new WorldPoint(3557, 3298, 0), Varbits.BARROWS_KILLED_VERAC);
 
 	@Getter
 	private final String name;
+	@Getter
+	private final int id;
 	@Getter
 	private final WorldPoint location;
 	@Getter

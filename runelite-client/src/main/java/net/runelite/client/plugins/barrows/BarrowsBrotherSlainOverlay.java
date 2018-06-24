@@ -28,7 +28,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -36,7 +40,11 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import lombok.extern.slf4j.Slf4j;
 
+import static net.runelite.api.NpcID.*;
+
+@Slf4j
 public class BarrowsBrotherSlainOverlay extends Overlay
 {
 	private final Client client;
@@ -67,6 +75,20 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 			barrowsBrothers.setHidden(true);
 		}
 
+		int id = engagedWith();
+		switch(id)
+		{
+			case AHRIM_THE_BLIGHTED:
+			case DHAROK_THE_WRETCHED:
+			case GUTHAN_THE_INFESTED:
+			case KARIL_THE_TAINTED:
+			case TORAG_THE_CORRUPTED:
+			case VERAC_THE_DEFILED:
+				break;
+			default:
+				id = -1;
+		}
+
 		panelComponent.getChildren().clear();
 
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
@@ -74,11 +96,36 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 			String slain = client.getVar(brother.getKilledVarbit()) > 0 ? "✓" : "";
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(brother.getName())
+				.leftColor((id != -1 && id == brother.getId()) ? Color.ORANGE : Color.WHITE)
 				.right(slain)
 				.rightColor(slain.isEmpty() ? Color.WHITE : Color.GREEN)
 				.build());
 		}
 
 		return panelComponent.render(graphics);
+	}
+
+	/**
+	 * Actors currently engaged with the player
+	 * @return ID of any actor currently interacting with the player
+	 */
+	private int engagedWith()
+	{
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return -1;
+		}
+
+		Actor actor = player.getInteracting();
+		if (actor == null || !(actor instanceof NPC))
+		{
+			return -1;
+		}
+
+		NPC opponent = (NPC) actor;
+
+		// Only need to grab the first word of the string
+		return opponent.getId();
 	}
 }
