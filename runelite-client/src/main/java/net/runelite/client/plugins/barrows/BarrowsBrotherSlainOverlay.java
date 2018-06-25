@@ -41,7 +41,6 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import lombok.extern.slf4j.Slf4j;
-
 import static net.runelite.api.NpcID.*;
 
 @Slf4j
