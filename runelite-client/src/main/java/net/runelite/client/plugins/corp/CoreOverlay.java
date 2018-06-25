@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions;
+package net.runelite.client.plugins.corp;
 
-public class FrameDefinition
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
+
+class CoreOverlay extends Overlay
 {
-	public int id; // file id
-	public FramemapDefinition framemap;
-	public int[] translator_x;
-	public int[] translator_y;
-	public int[] translator_z;
-	public int translatorCount = -1;
-	public int[] indexFrameIds;
-	public boolean showing;
+	private final Client client;
+	private final CorpPlugin corpPlugin;
+
+	@Inject
+	private CoreOverlay(Client client, CorpPlugin corpPlugin)
+	{
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.client = client;
+		this.corpPlugin = corpPlugin;
+	}
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		NPC core = corpPlugin.getCore();
+		if (core != null)
+		{
+			Polygon canvasTilePoly = core.getCanvasTilePoly();
+			if (canvasTilePoly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, canvasTilePoly, Color.RED.brighter());
+			}
+		}
+
+		return null;
+	}
 }

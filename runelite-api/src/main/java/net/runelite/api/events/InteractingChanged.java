@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions;
+package net.runelite.api.events;
 
-public class FrameDefinition
+import lombok.Value;
+import net.runelite.api.Actor;
+
+/**
+ * An event called when the actor an actor is interacting with changes
+ */
+@Value
+public class InteractingChanged
 {
-	public int id; // file id
-	public FramemapDefinition framemap;
-	public int[] translator_x;
-	public int[] translator_y;
-	public int[] translator_z;
-	public int translatorCount = -1;
-	public int[] indexFrameIds;
-	public boolean showing;
+	private final Actor source;
+
+	/**
+	 * Target actor, may be null
+	 */
+	private final Actor target;
 }

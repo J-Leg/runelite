@@ -192,24 +192,47 @@ public abstract class RSModelMixin implements RSModel
 					int translateZ;
 					if (type == 2)
 					{
-						int deltaX = nextTranslateX - currentTranslateX & 0x3fff;
-						int deltaY = nextTranslateY - currentTranslateY & 0x3fff;
-						int deltaZ = nextTranslateZ - currentTranslateZ & 0x3fff;
-						if (deltaX >= 8192)
+						if (nextTranslateX != 0)
 						{
-							deltaX -= 16384;
+							int deltaX = nextTranslateX - currentTranslateX & 0xFF;
+							if (deltaX >= 128)
+							{
+								deltaX -= 256;
+							}
+							translateX = currentTranslateX + deltaX * interval / intervalCount & 0xFF;
 						}
-						if (deltaY >= 8192)
+						else
 						{
-							deltaY -= 16384;
+							translateX = currentTranslateX;
 						}
-						if (deltaZ >= 8192)
+
+						if (nextTranslateY != 0)
 						{
-							deltaZ -= 16384;
+							int deltaY = nextTranslateY - currentTranslateY & 0xFF;
+							if (deltaY >= 128)
+							{
+								deltaY -= 256;
+							}
+							translateY = currentTranslateY + deltaY * interval / intervalCount & 0xFF;
 						}
-						translateX = currentTranslateX + deltaX * interval / intervalCount & 0x3fff;
-						translateY = currentTranslateY + deltaY * interval / intervalCount & 0x3fff;
-						translateZ = currentTranslateZ + deltaZ * interval / intervalCount & 0x3fff;
+						else
+						{
+							translateY = currentTranslateY;
+						}
+
+						if (nextTranslateZ != 0)
+						{
+							int deltaZ = nextTranslateZ - currentTranslateZ & 0xFF;
+							if (deltaZ >= 128)
+							{
+								deltaZ -= 256;
+							}
+							translateZ = currentTranslateZ + deltaZ * interval / intervalCount & 0xFF;
+						}
+						else
+						{
+							translateZ = currentTranslateZ;
+						}
 					}
 					else if (type == 5)
 					{
